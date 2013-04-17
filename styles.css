@@ -1,0 +1,117 @@
+/*styles for Nationals training web app.*/
+html,body{
+	margin: 0 auto;
+	padding: 0;
+	width: 1020px;
+	height: auto;
+	position: static;
+}
+
+#header{
+	height: 170px;
+	background-color:#00C5B2;
+}
+
+#heading{
+	width:242px;
+	padding:36px 0 0px 36px;
+	float: left;
+}
+
+#heading .largest{
+	font-family: 'texgyreadventorbold';
+	font-size:52px;
+	line-height: 30px;
+}
+
+#heading .date{
+	font-family: 'texgyreadventorregular';
+	font-size:27px;
+	line-height: 27px;
+	letter-spacing:0.9px;
+}
+
+#heading .location{
+	font-family: 'texgyreadventorbold';
+	font-size:24px;
+	line-height: 23px;
+}
+
+#counting{
+	width: 500px;
+	padding: 42px 0 0px 42px;
+	float: left;
+}
+
+#counting #timeNumbers{
+	font-family: 'intro_regular';
+	font-weight: normal;
+	font-size: 72px;
+	font-style: normal;
+	letter-spacing:0.05em;
+	line-height: 50px;
+	color: #FFFFFF;
+}
+
+#counting #timeNumbers span{
+	float: left;
+	width: 88px;
+	text-align: center;
+}
+
+#counting #timeNumbers .colon{
+	float: left;
+	width: 30px;
+	text-align: center;
+}
+
+.timeText table td{
+	font-family: 'texgyreadventorbold';
+	font-size: 18px;
+	width: 88px;
+	text-align: center;
+	padding-right: 27px;
+	border: none;
+}
+
+#navigation{
+	height: 50px;
+	float: left;
+	width: 984px;
+	clear: all;
+	margin-left: 36px;
+	line-height: 45px;
+	font-size: 25px;
+}
+
+#navigation a{
+	text-decoration: none;
+	color: black;
+}
+
+
+#navigation a:hover{
+	color:#00C5B2;
+}
+
+.selectedlink{
+	font-family: 'texgyreadventorbold';
+}
+
+.inactivelink{
+	font-family: 'texgyreadventorregular';
+}
+
+#maincontent{
+	height: 507px;
+	width: 949px;
+	margin-left: 36px;
+	margin-right: 36px;
+	float:left;
+}
+
+#maincontent h2{
+	font-size: 30px;
+	font-family: 'texgyreadventorbold';
+	text-align: center;
+}
