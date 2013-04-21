@@ -3,14 +3,14 @@
 <!DOCTYPE html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Nationals Training</title>
+	<title>Nationals Countdown</title>
 	<link href="styles.css" rel="stylesheet" type="text/css" />
 	<link href="assets/tex_gyre_adventor_font/stylesheet.css" rel="stylesheet" type="text/css" />
 	<link href="assets/intro_font/stylesheet.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="assets/modernizr.js"></script>
 	<script type="text/javascript" src="countdown.js"></script>
 </head>
-<body>
+<body onload="initializeCalendar()">
 	<div id = "header">
 		<div id = "heading">
 			<span class="largest">Nationals</span>
@@ -44,7 +44,26 @@
 		<a href = "#" class ="inactivelink">Feising</a>
 	</div>
 	<div id = "maincontent">
-		<h2 id="month">APRIL</h2>
+		<h2 id="month"></h2>
+		<div id="calendar">
+			<table>
+				<thead>
+					<tr id="dayLabels">
+						<td>Sun</td>
+						<td>Mon</td>
+						<td>Tues</td>
+						<td>Wed</td>
+						<td>Thurs</td>
+						<td>Fri</td>
+						<td>Sat</td>
+					</tr>
+				</thead>
+				<tbody id = "tablebody">
+				</tbody>
+			</table>
+		</div>
 	</div>
+	<div id="feisPopUp">Add a feis</div>
+	<canvas id = "addFeisCanvas" width = "204" height = "141"></canvas>
 </body>
 </html>
