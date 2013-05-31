@@ -197,7 +197,8 @@ var initializeCalendar = function()
 		for (var dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++)
 		{
 			var tableElement = document.createElement("td");
-			tableElement.setAttribute("onclick", "showFeisPopUp()");
+			tableElement.id = daysOfMonth[dayOfMonthCount].date;
+			tableElement.setAttribute("onclick", "showFeisPopUp(" + tableElement.id + ")");
 			var text = document.createTextNode(daysOfMonth[dayOfMonthCount].date);
 			tableElement.appendChild(text);
 			tableRow.appendChild(tableElement);
@@ -207,22 +208,177 @@ var initializeCalendar = function()
 	}
 }
 
-var draw = function(){
+var drawCircle = function(x,y,radius,start,end){
 	var contex = document.getElementById('addFeisCanvas').getContext('2d');
-	contex.fillRect(5,5,50,100);
+	contex.fillStyle = "#00C5B2";
+	contex.beginPath();
+	contex.moveTo(x,y);
+	contex.arc(x,y,radius,start,end,false);
+	contex.fill();
+	contex.closePath();
+
+	/*contex.beginPath();
+	contex.fillStyle = "#00C5B2";
+	contex.fillRect(32,32,168,119);
+	contex.fill();
+	contex.lineWidth = 4;
+	contex.strokeStyle = "white";
+	contex.strokeRect(32,32,168,119); */
 }
 
-var showFeisPopUp = function()
+var removeFeisCanvas = function()
 {
-	var canvas = document.getElementById('addFeisCanvas');
-	canvas.style.opacity = 1;
+	var canvas = document.getElementById("addFeisCanvas");
+	canvas.parentNode.removeChild(canvas);
+}
+
+var showFeisPopUp = function(theid)
+{
+	var body = document.getElementById("thebody");
+
+	//getTable positions
+	var table = document.getElementById("tablebody");
+	var tablebounds = table.getBoundingClientRect();
+
+	//get main content (calendar) position
+	var themaincontent = document.getElementById("maincontent");
+
+	//get the position of the day clicked
+	var theday = document.getElementById(theid);
+	var daybounds = theday.getBoundingClientRect();
+
+	//canvas creation
+	var canvas = document.createElement("canvas");
+	canvas.id="addFeisCanvas";
+	canvas.setAttribute('width', 950);
+	canvas.setAttribute('height', 500);
+	//canvas.setAttribute('onclick',"removeFeisCanvas()");
+	canvas.style.left = (tablebounds.left - 10) + "px";
+	canvas.style.top = (tablebounds.top) + "px";
+
+	var x = daybounds.left - tablebounds.left + 30;
+	var y = daybounds.top - tablebounds.top + 20;
+
+	body.appendChild(canvas);
 	if (canvas.getContext){
 		var contex = canvas.getContext('2d');
-		draw();
+		//contex.beginPath();
+		//contex.moveTo(20,20);
+		//contex.arc(20,20,6,0,Math.PI*2,false);
+		//contex.fill();
+		drawCircle(x,y,4.5,0,Math.PI*2,false);
+		drawCircle(x+10,y+10,6,Math.PI*2,false);
+		drawCircle(x+22,y+22,8,Math.PI*2,false);
+		roundedRect(contex,x+22,y+22,168,119,8);
 	}
 	else{
 
 	}
-	//document.getElementById("feisPopUp").style.visibility = "visible";
-	//document.getElementById("maincontent").style.opacity = "0.5";
+	x += tablebounds.left;
+	y += tablebounds.top + 15;
+	addFeisDialogText(themaincontent,x+22,y+22,theid);
 };
+
+var addFeisDialogText = function(themaincontent,x,y,theid){
+	//the text and responses
+	var feisDialog = document.createElement("div");
+	feisDialog.id = "feisDialog";
+	feisDialog.name = "feisDialog";
+	feisDialog.style.left = x + "px";
+	feisDialog.style.top = y + "px";
+
+
+	var feisDialogHeader = document.createElement("h4");
+	var feisForm = document.createElement("form");
+	feisForm.id = "feisFormID";
+
+	var feisTextInput = document.createElement("input");
+	feisTextInput.type = "text";
+	feisTextInput.id = "nameOfFeis";
+	feisTextInput.value = "feis name";
+	feisTextInput.setAttribute("autofocus", "autofocus");
+	//feisTextInput.focus();
+
+	var feisText = document.createTextNode("Add a Feis");
+
+	var feisSubmit = document.createElement("a")
+	feisSubmit.setAttribute("style:padding","5px")
+
+	//feisSubmit.setAttribute('onclick',"document.getElementById('feisFormID').submit()");
+	feisSubmit.setAttribute("onclick","addFeis(" + theid + ")");
+
+	var feisCancel = document.createElement("a");
+	feisCancel.setAttribute('onclick',"closeFeisDialog()");
+
+	var feisOk = document.createTextNode("Ok");
+	var feisJK = document.createTextNode("Just Kidding");
+
+	feisForm.appendChild(feisTextInput);
+	feisDialogHeader.appendChild(feisText);
+	feisDialog.appendChild(feisDialogHeader);
+	feisDialog.appendChild(feisForm);
+
+	feisSubmit.appendChild(feisOk);
+	feisCancel.appendChild(feisJK);
+	feisDialog.appendChild(feisSubmit);
+	feisDialog.appendChild(feisCancel);
+
+	var body = document.getElementById('thebody');
+	body.appendChild(feisDialog);
+}
+
+var addFeis = function(theid)
+{
+	var theday = document.getElementById(theid);
+	theday.style.background = "#00C5B2";
+
+	var thefeis = document.getElementById("nameOfFeis");
+	var name = thefeis.value;
+
+	var nameElement = document.createTextNode(name);
+	var eventParagraph = document.createElement("p");
+	eventParagraph.appendChild(nameElement); 
+	nameElement.id = "event";
+	theday.appendChild(eventParagraph);
+
+	closeFeisDialog();
+}
+
+var closeFeisDialog = function()
+{
+	document.getElementById('feisDialog').parentNode.removeChild(document.getElementById('feisDialog'));
+	removeFeisCanvas();
+}
+
+//From html5 tutorial
+var roundedRect = function(ctx,x,y,width,height,radius){
+  ctx.save();
+
+  //set the shadows
+  ctx.shadowOffsetX = 5;
+  ctx.shadowOffsetY = 5;
+  ctx.shadowBlur = 10;
+  ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+
+  //draw the inside of the rounded rectangle
+  ctx.beginPath();
+  ctx.moveTo(x,y+radius);
+  ctx.lineTo(x,y+height-radius);
+  ctx.quadraticCurveTo(x,y+height,x+radius,y+height);
+  ctx.lineTo(x+width-radius,y+height);
+  ctx.quadraticCurveTo(x+width,y+height,x+width,y+height-radius);
+  ctx.lineTo(x+width,y+radius);
+  ctx.quadraticCurveTo(x+width,y,x+width-radius,y);
+  ctx.lineTo(x+radius,y);
+  ctx.quadraticCurveTo(x,y,x,y+radius);
+  ctx.fillStyle = "#00C5B2";
+  ctx.fill();
+
+  //Restore to get rid of the shadow property
+  ctx.restore();
+
+  //Draw the outline of the rectangle
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = "white";
+  ctx.stroke();
+}
